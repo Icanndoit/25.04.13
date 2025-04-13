@@ -1,0 +1,56 @@
+#include<iostream>
+using namespace std;
+
+int profit1(const int value[], int cash) {  // 준현
+	int stock = 0;  // 가지고 있는 주식 수
+	for (int i = 0; i < 14; i++)
+	{
+		if (value[i] <= cash) {
+			stock += (cash / value[i]);
+			cash -= (stock * value[i]);
+		}
+	}
+	return cash + (value[13] * stock);
+}
+
+int profit2(const int value[], int cash) {  // 성민
+	int stock = 0;  // 가지고 있는 주식 수
+	for (int i = 0; i < 14; i++)
+	{
+		if (i >= 3) 
+		{	// 주가가 3일연속 하락하는 경우
+			if (value[i - 1] < value[i - 2] && value[i - 2] < value[i - 3])
+			{
+				if (cash >= value[i]) {  // 현금이 충분하면 매수
+					stock += (cash / value[i]);
+					cash -= (stock * value[i]);
+				}
+			}  // 주가가 3일연속 상승하는 경우
+			else if (value[i - 1] > value[i - 2] && value[i - 2] > value[i - 3])
+			{
+				if (stock != 0) {  // 주식을 가지고 있으면 매도
+					cash += (value[i] * stock);
+					stock = 0;
+				}
+			}
+		}
+	}
+	return cash + (value[13] * stock);
+}
+
+int main() {
+	int value[14], cash;
+
+	cin >> cash;
+	for (int i = 0; i < 14; i++)
+		cin >> value[i];
+
+	if (profit1(value, cash) > profit2(value, cash))
+		cout << "BNP\n";
+	else if (profit1(value, cash) < profit2(value, cash))
+		cout << "TIMING\n";
+	else
+		cout << "SAMESAME\n";
+
+	return 0;
+}
