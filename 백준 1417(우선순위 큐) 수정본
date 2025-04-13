@@ -1,0 +1,30 @@
+#include<iostream>
+#include<vector>
+#include<queue>
+using namespace std;
+
+int main() {
+	int n, len, out = 0;
+	priority_queue<int>Queue;
+	
+	cin >> len;
+	cin >> n;
+
+	for (int i = 0; i < len - 1; i++) {
+		int data;  cin >> data;
+		Queue.push(data);
+	}
+	while (!Queue.empty())
+	{
+		if (Queue.top() >= n) {
+			int tmp = Queue.top();
+			tmp--;  n++;  out++;
+			Queue.pop();  Queue.push(tmp);
+		}
+		else
+			break;
+	}cout << out << endl;
+	
+
+	return 0;
+}
